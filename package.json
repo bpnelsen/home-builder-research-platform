@@ -1,0 +1,39 @@
+{
+  "name": "home-builder-research-platform",
+  "version": "0.1.0",
+  "description": "AI-powered financial research platform for home builders",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:setup": "node scripts/setup-database.js",
+    "scrape:stocks": "node scripts/scrape-stocks.js",
+    "scrape:filings": "node scripts/scrape-filings.js",
+    "process:10k": "node scripts/process-10k-summaries.js",
+    "process:earnings": "node scripts/process-earnings-calls.js",
+    "process:all": "npm run process:10k && npm run process:earnings"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.98.0",
+    "axios": "^1.13.6",
+    "cheerio": "^1.0.0-rc.12",
+    "date-fns": "^3.0.0",
+    "dotenv": "^16.3.1",
+    "lucide-react": "^0.577.0",
+    "next": "^14.2.35",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.42",
+    "@types/react-dom": "^18.2.17",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.55.0",
+    "eslint-config-next": "^14.2.35",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.1"
+  }
+}

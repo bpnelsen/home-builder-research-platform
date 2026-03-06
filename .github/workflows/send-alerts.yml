@@ -1,0 +1,34 @@
+name: Send Email Alerts
+
+on:
+  schedule:
+    - cron: '0 7 * * *'  # Daily at 7 AM MST (2 PM UTC)
+  workflow_dispatch:
+
+jobs:
+  send-alerts:
+    runs-on: ubuntu-latest
+    name: Send 10-K & Earnings Alerts
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Send 10-K Alerts
+        run: |
+          curl -X POST https://home-builder-research.vercel.app/api/alerts/send-10k \
+            -H "Authorization: Bearer ${{ secrets.ALERTS_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{}' || echo "No new 10-K filings"
+
+      - name: Send Earnings Alerts
+        run: |
+          curl -X POST https://home-builder-research.vercel.app/api/alerts/send-earnings \
+            -H "Authorization: Bearer ${{ secrets.ALERTS_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{}' || echo "No new earnings calls"
+
+      - name: Log completion
+        run: |
+          echo "✅ Alert sending complete"
+          echo "📅 Timestamp: $(date)"

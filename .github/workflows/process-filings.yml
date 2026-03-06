@@ -1,0 +1,42 @@
+name: Process Filings with AI
+
+on:
+  schedule:
+    - cron: '0 10 * * 0'  # Weekly Sunday at 10 AM MST
+  workflow_dispatch:
+
+jobs:
+  process-10k:
+    runs-on: ubuntu-latest
+    name: Process 10-K Summaries
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Process 10-K filings with Claude
+        run: npm run process:10k
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
+
+      - name: Process earnings calls with Claude
+        run: npm run process:earnings
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
+
+      - name: Log completion
+        run: |
+          echo "✅ AI processing complete"
+          echo "📊 Filings processed and summarized"
