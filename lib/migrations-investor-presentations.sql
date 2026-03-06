@@ -28,9 +28,10 @@ DROP POLICY IF EXISTS allow_public_read_presentations ON investor_presentations;
 CREATE POLICY allow_public_read_presentations ON investor_presentations
   FOR SELECT USING (true);
 
--- Update earnings_calls table to support transcript URLs
+-- Update earnings_calls table to support REAL transcripts (not SEC filings)
 ALTER TABLE earnings_calls ADD COLUMN IF NOT EXISTS transcript_url TEXT;
 ALTER TABLE earnings_calls ADD COLUMN IF NOT EXISTS transcript_source TEXT DEFAULT 'seeking_alpha';
+ALTER TABLE earnings_calls ADD COLUMN IF NOT EXISTS analyst_questions TEXT;
 
 -- Create indexes for earnings_calls if they don't exist
 CREATE INDEX IF NOT EXISTS idx_earnings_calls_builder ON earnings_calls(builder_id);
